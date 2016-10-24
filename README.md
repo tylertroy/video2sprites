@@ -181,7 +181,7 @@ montage scaled*.png -tile 1x55 -geometry 195x251+0+0 -background transparent "as
 rm *_???.png
 ```
 
-## Using your sprites in a your Game
+## Using the sprite sheet with pygame
 
 Here is a basic example using our animation sprite sheet with pygame. The SpriteSheet class is merely a convenient way to cycle through each frame of the sprite sheet. I also included another graphical element I created using the same technique. If you did not download this new element `'bluering_95x(114x150).png'` you should remove the lines marked ###. 
 
