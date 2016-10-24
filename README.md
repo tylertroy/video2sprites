@@ -1,11 +1,22 @@
 # video2spritegen
-A tutorial demonstrating animation techniques for game development using freely-available videos, and software.  
+An image batch processing tutorial for extracting frames from chroma key videos to generate sprite sheets using bash, ffmpeg, and imagemagick.
 
-It is commonly said that gameplay is everything but sometimes ugly graphics can detract from an otherwise fun game. As much as we might care to deny, many programmers are bereft of an eye for graphical design. Worse yet, your "classic" graphics in all of their 8-bit pallete glory might actually prevent a would-be player from ever taking the time to give your game a go.
+## Introduction
+It is commonly said that gameplay is everything but sometimes ugly graphics can detract from an otherwise fun game. So why not take advantage of the plethora of free film making green screen content available on the internet?  
 
-Thankfully in the age of the world wide web, many free graphical resources are available to spruce up your game-play gem. With the help of a little Linux piping and the myriad of free sofwares you can create beautiful sprite-based animations with the stroke of a key or two.
+In this tutorial we're going to extract the frames of a video for processing, and combining to create a sprite sheet with transparent backgrounds for incorporation into your game. We'll be using the bash shell in Linux and pygame but these techniques can be adapted to your favorite OS or game development platform. 
 
-In this tutorial we're going to programatically generate a series of sprites from free-to-use videos and combine them into a sprite sheet for incorporation into your game creations. We'll be using the bash shell in Linux and pygame but these techniques can be adapted to your favorite OS or game development platform. Let's start with the tools you'll need.
+Using python, ffmpeg, imagemagick, and the power of Linux piping, you will learn to:
+
+* download youtube video
+* extract image frames from video
+* batch process frames for
+  * cropping
+  * chroma key frames
+  * edge blur
+  * rescale
+* montage frames to create sprite sheet
+* test sprite sheet animation with pygame
 
 ## Tools
 
@@ -122,13 +133,23 @@ Finally we should combine these frames into a single sprite sheet because loadin
 montage scaled*.png -tile 1x55 -geometry 195x251+0+0 -background transparent "asteroid_195x(251x55).png"
 ```
 
-Here we create a sprite sheet of 1 row and 55 columns where the dimension of each image specified as 195 width and 251 height. It's useful to indicate the size of each sprite in the sheet in the file name so you don't have to work it out later. Once you've created the sprite sheet you can delete all the other frames you created along the way.
+Here we create a sprite sheet of 1 row and 55 columns where the dimension of each image specified as 195 width and 251 height. It's useful to indicate the size of each sprite in the sheet in the file name so you don't have to work it out later. 
+
+Once you've created the sprite sheet you can delete all the other frames you created along the way.
 
 ```bash
 rm *_???.png
 ```
 
 ## Putting it All Together
+
+Check out a video of the finished product.
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=xmJ4QZDIyJ8
+" target="_blank"><img src="http://img.youtube.com/vi/xmJ4QZDIyJ8/0.jpg" 
+alt="Transparent background Asteroid" width="640" height="480" border="2" /></a>
+
+Here are all the steps conveniently combined.
 
 ```bash
 # Download Video
