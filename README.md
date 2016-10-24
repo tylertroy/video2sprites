@@ -139,6 +139,8 @@ montage scaled*.png -tile 1x55 -geometry 195x251+0+0 -background transparent "as
 
 Here we create a sprite sheet of 1 row and 55 columns where the dimension of each image specified as 195 width and 251 height. It's useful to indicate the size of each sprite in the sheet in the file name so you don't have to work it out later. 
 
+You can see the sprite sheet [here](https://github.com/tylertroy/video2spritegen/blob/master/asteroid_195x(251x55).png). 
+
 Once you've created the sprite sheet you can delete all the other frames you created along the way.
 
 ```bash
