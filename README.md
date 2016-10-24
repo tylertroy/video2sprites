@@ -8,7 +8,7 @@ In this tutorial we're going to extract the frames of a video for processing, an
 
 Using python, ffmpeg, imagemagick, and the power of Linux piping, you will learn to:
 
-* download youtube video
+* download a youtube video
 * extract image frames from video
 * batch process frames for
   * cropping
