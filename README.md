@@ -70,7 +70,7 @@ Now we remove the background color to make it transparent again using imagmagick
 convert asteroid_164.png -fuzz 40% -transparent \#00fc00 chroma_163.png
 ```
 
-You can see the result of changing the fuzz factor below, using between 10, and 40 %, from left to right. 
+You can see the result of changing the `-fuzz` factor below, using between 10, and 40 %, from left to right. 
 
 ![](https://github.com/tylertroy/video2spritegen/blob/master/chroma_compare.png "Comparison of 10 to 40% fuzz")
 
