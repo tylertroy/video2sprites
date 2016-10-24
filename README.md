@@ -121,9 +121,13 @@ You should scale your image to the appropriate size for your application by modi
 ls scaled*.png | awk 'NR % 2 == 1 { print }' | xargs rm
 ```
 
-Here we are removing every 2nd frame. For every 3rd frame you would use `3 == 1`, etc. This leaves us with 55 items for 3MB in total. A much more reasonable size for a game element. Here's an example of the finished product.
+Here we are removing every 2nd frame. For every 3rd frame you would use `3 == 1`, etc. This leaves us with 55 items for 3MB in total. A much more reasonable size for a game element. 
 
-![](https://github.com/tylertroy/video2spritegen/blob/master/scaled.png "final example")
+Here's an example animation of the finished product using the unscaled frames.
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=xmJ4QZDIyJ8
+" target="_blank"><img src="http://img.youtube.com/vi/xmJ4QZDIyJ8/0.jpg" 
+alt="Transparent background Asteroid" width="640" height="480" border="2" /></a>
 
 ## Generate Sprite Sheet
 
@@ -142,12 +146,6 @@ rm *_???.png
 ```
 
 ## Putting it All Together
-
-Check out a video of the finished product.
-
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=xmJ4QZDIyJ8
-" target="_blank"><img src="http://img.youtube.com/vi/xmJ4QZDIyJ8/0.jpg" 
-alt="Transparent background Asteroid" width="640" height="480" border="2" /></a>
 
 Here are all the steps conveniently combined.
 
