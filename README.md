@@ -4,7 +4,7 @@ An image batch processing tutorial for extracting frames from chroma key videos 
 ## Introduction
 It is commonly said that gameplay is everything but sometimes ugly graphics can detract from an otherwise fun game. So why not take advantage of the plethora of free film making green screen content available on the internet?  
 
-In this tutorial we're going to extract the frames of a video for processing, and combining to create a sprite sheet with transparent backgrounds for incorporation into your game. We'll be using the bash shell in Linux and pygame but these techniques can be adapted to your favorite OS or game development platform. 
+In this tutorial we're going to extract the frames of a video for processing, and combining to create a sprite sheet with a transparent background for incorporation into your game. We'll be using the bash shell in Linux and pygame but these techniques can be adapted to your favorite OS or game development platform. 
 
 Using python, ffmpeg, imagemagick, and the power of Linux piping, you will learn to:
 
