@@ -1,5 +1,5 @@
 # video2spritegen
-An image batch processing tutorial for extracting frames from chroma key videos to generate sprite sheets using bash, ffmpeg, and imagemagick.
+An image batch processing tutorial for extracting frames from chroma key videos to generate sprite sheets using the Linux command line, ffmpeg, and imagemagick.
 
 ## Introduction
 It is commonly said that gameplay is everything but sometimes ugly graphics can detract from an otherwise fun game. So why not take advantage of the plethora of free film making green screen content available on the internet?  
