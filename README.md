@@ -52,7 +52,7 @@ Now we will use ffmpeg to extract the frames from the video.
 ffmpeg -i asteroid.mp4 -r 20 asteroid_%03d.png
 ```
 
-The `-r` argument specifies the rate in Hz which you can think about as fps. The `_%03d` indicates the number of integer digits for file naming so it will be a maximum of 999. You should modify this appropraitely for the number of frames you expect for your video for a given frame rate. In this case 38s at 20fps gives about 720 frames at 1980x720 pixels/frame.
+The `-r` argument specifies the rate in Hz which you can think about as fps. The `_%03d` indicates the number of integer digits for file naming so it will be a maximum of 999. You should modify this appropriately for the number of frames you expect for your video for a given frame rate. In this case 38s at 20fps gives about 720 frames at 1980x720 pixels/frame.
 
 Usually there will be some intro content and in the case of this video, multiple loops so now were going to inspect the frames to work out which ones we should delete to achieve a smooth animation loop.
 
@@ -92,7 +92,7 @@ ls cropped*.png | sed 's/cropped//' | xargs -I{} echo convert cropped{} -fuzz 40
 ```
 ## Edge Bluring
 
-You can skip this step if you're happy with the results from the previous step, especially if you plan to significantly reduce the size of each frame. Nevertheless a higher fuzz factor can result in jagged edges that can look a little nasty but we can clean up the edges with some edge bluring. Again it's good to start with a test image to get the right settings before batch processing.
+You can skip this step if you're happy with the results from the previous step, especially if you plan to significantly reduce the size of each frame. Nevertheless this chroma key technique will result in jagged edges that can look a little nasty but we can clean up the edges with some edge bluring. It can be good to start with a test image to get the right settings before batch processing.
 
 ```bash
 convert chroma_164.png -alpha set -virtual-pixel transparent -channel A -blur 0x2 -level 50%,100% +channel edge.png
