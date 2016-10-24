@@ -96,7 +96,7 @@ ls edge*.png | sed 's/edge//' | xargs -I{} echo convert edge{} -resize 30% scale
 You should scale your image to the appropriate size for your application by modifying the -resize 30% term. This significanly reduces our set size to 6.3 MB. we still have 110 frames which might be a bit excessive so we can remove every nth frame. This may not be suitable for your animation, it all depends on what you're going for.
 
 ```bash
-ls *.png | awk 'NR % 2 == 1 { print }' | xargs rm
+ls scaled*.png | awk 'NR % 2 == 1 { print }' | xargs rm
 ```
 
 Here we are removing every 2nd frame. For every 3rd frame you would use `3 == 1`, etc. This leaves us with 55 items for 3MB in total. A much more reasonable size for a game element.
@@ -106,7 +106,7 @@ Here we are removing every 2nd frame. For every 3rd frame you would use `3 == 1`
 Finally we should combine these frames into a single sprite sheet because loading 55 files (let alone many animated elements) will be slow! To generate a sprite sheet we can use imagemagick's montage tool.
 
 ```bash
-montage scaled*.png -tile 1x55 -geometry 195x251+0+0 -background transparent asteroid_195x(251x55).png
+montage scaled*.png -tile 1x55 -geometry 195x251+0+0 -background transparent "asteroid_195x(251x55).png"
 ```
 
 Here we create a sprite sheet of 1 row and 55 columns where the dimension of each image specified as 195 width and 251 height. It's useful to indicate the size of each sprite in the sheet in the file name so you don't have to work it out later. Once you've created the sprite sheet you can delete all the other frames you created along the way.
@@ -135,14 +135,13 @@ ls chroma*.png | sed 's/chroma//' | xargs -I{} echo \
 convert chroma{} -alpha set -virtual-pixel transparent -channel A -blur 0x2 -level 50%,100% +channel edge{} | sh
 
 # Rescale
-
 ls edge*.png | sed 's/edge//' | xargs -I{} echo convert edge{} -resize 30% scaled{} | sh
 
 # Remove every nth frame
-ls *.png | awk 'NR % 2 == 1 { print }' | xargs rm 
+ls scaled*.png | awk 'NR % 2 == 1 { print }' | xargs rm 
 
 # Generate sprite sheet
-montage scaled*.png -tile 1x55 -geometry 195x251+0+0 -background transparent asteroid_195x(251x55).png
+montage scaled*.png -tile 1x55 -geometry 195x251+0+0 -background transparent "asteroid_195x(251x55).png"
 
 # Remove working frames
 rm *_???.png
@@ -150,7 +149,7 @@ rm *_???.png
 
 ## Using your sprites in a your Game
 
-Here is a toy example of using your animation sprite sheet in pygame. I also include a couple of other graphical elements I created using the same technique.
+Here is a basic example using our animation sprite sheet with pygame. The SpriteSheet class is merely a convenient way to cycle through each frame of the sprite sheet. I also included another graphical element I created using the same technique. If you did not download this new element `'bluering_95x(114x150).png'` you should remove the lines marked ###. 
 
 ```python
 import pygame
@@ -167,15 +166,19 @@ class SpriteSheet(pygame.sprite.Sprite):
        self.image = pygame.Surface.convert_alpha(self.image)
        self.unit_height = unit_height
        self.rect = self.image.get_rect()
-       self.sub_rect = pygame.Rect((0, 0, self.image.get_width(), unit_height))
+       self.draw_area = pygame.Rect((0, 0, self.image.get_width(), \
+           unit_height))
     def update(self):
-        """ Return the next sub rect for current frame """
-        if self.sub_rect.top < self.image.get_height()-self.unit_height:
-            self.sub_rect.top += self.unit_height
+        """ Return the next sub rect for current frame. 
+        """
+        if self.draw_area.top < self.image.get_height() - self.unit_height:
+            self.draw_area.top += self.unit_height
         else:
-            self.sub_rect.top = 0
+            self.draw_area.top = 0
     def draw(self, surface):
-        surface.blit(self.image, self.rect, self.sub_rect) 
+        """ Blit current frame defined by self.draw_area to surface. 
+        """
+        surface.blit(self.image, self.rect, self.draw_area) 
 
 if __name__ == '__main__':
     pygame.init()
@@ -187,22 +190,25 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode(size)
 
     asteroid = SpriteSheet('asteroid_195x(251x55).png', unit_height=251)
-    bluering = SpriteSheet('bluering_95x(114x150).png', unit_height=114)
+    bluering = SpriteSheet('bluering_95x(114x150).png', unit_height=114) ###
     asteroid.rect.topleft = (50, 50)
-    bluering.rect.topleft = (400, 50)
+    bluering.rect.topleft = (400, 50) ###
 
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: pygame.quit()
         screen.fill(black)
+        
         asteroid.update()
-        bluering.update()
+        bluering.update() ###
+        
         asteroid.draw(screen)
-        bluering.draw(screen)
+        bluering.draw(screen) ###
+        
         pygame.display.flip()
         pygame.time.wait(25)
 ```
 
 ## A note for Windows users
 
-All of the programs and libraries I have used here (youtube-dl, imagemagick, ffmpeg, gimp, python, pygame) are available for windows however the batch processing commands using Linux piping, `|`, wont work in `cmd.exe`. There is probabably a way to achieve similar results in Windows' Powershell but I'm not familiar enough with that to provide a good solution here. If anyone feels like forking a windows adapted version of this tutorial that would be great! Alternatively you can try installing Linux, you wont be disappointed! 
+All of the programs and libraries I have used here (youtube-dl, imagemagick, ffmpeg, gimp, python, pygame) are freely-available for windows however the batch processing commands using Linux piping, `|`, wont work in `cmd.exe`. There is probabably a way to achieve similar results in Windows' Powershell but I'm not familiar enough with that to provide a good solution here. If anyone feels like forking a windows adapted version of this tutorial that would be great! Alternatively you can try installing Linux, you won't be disappointed! 
