@@ -5,7 +5,7 @@ It is commonly said that gameplay is everything but sometimes ugly graphics can 
 
 Thankfully in the age of the world wide web, many free graphical resources are available to spruce up your game-play gem. With the help of a little Linux piping and the myriad of free sofwares you can create beautiful sprite-based animations with the stroke of a key or two.
 
-In this tutorial we're going to programatically generate a series of sprites from free-to-use videos and combine them into a sprite sheet for incorporation into your game creations. We'll be using pygame in Linux but these techniques can be adapted to your favorite OS or game development platform. Let's start with the tools you'll need.
+In this tutorial we're going to programatically generate a series of sprites from free-to-use videos and combine them into a sprite sheet for incorporation into your game creations. We'll be using the bash shell in Linux and pygame but these techniques can be adapted to your favorite OS or game development platform. Let's start with the tools you'll need.
 
 ## Tools
 
@@ -47,6 +47,8 @@ Usually there will be some intro content and in the case of this video, multiple
 
 The first 163 frames containing the intro can be deleted. Now we'll identify the frame range representing one loop.  This is best achieved by opening two image viewers side by side and cycling though one viewer until you find the loop. In our case frames 164 to 273 leaving us with 110 frames. Here's an example frame.
 
+![](https://github.com/tylertroy/video2spritegen/blob/master/asteroid.png "Single Frame")
+
 ## Cropping
 
 Because of the aspect ratio much of the content in each frame will be empty and this will represent wasted memory when you use the images in your game. So we're going to crop the content to the minimum size. This again relies on inspection of the frames to work out what crop dimensions will keep all the content in each frame. You should identify the frame containing the widest and longest content and determine the crop dimensions using an image editor such as Gimp. In this case I determined the appropriate dimensions to be 650 width x 836 height at position 663 left, 139 top.
@@ -56,7 +58,9 @@ Now let's use imagemagick's convert tool to crop the frames.
 ```bash
 ls *png | sed 's/asteroid//' | xargs -I{} echo convert asteroid{} -crop 650x836+663+139 cropped{} | sh
 ```
-You should inspect the cropped frames to make sure you haven't clipped any of the content. If there is a clipped frame just rerun the above using different dimensions until you get it right.   
+You should inspect the cropped frames to make sure you haven't clipped any of the content. If there is a clipped frame just rerun the above using different dimensions until you get it right. Here's a sample frame cropped.
+
+![](https://github.com/tylertroy/video2spritegen/blob/master/crop.png "Cropped Single Frame")
 
 ## Chroma Key
 
@@ -66,7 +70,11 @@ Now we remove the background color to make it transparent again using imagmagick
 convert asteroid_164.png -fuzz 40% -transparent \#00fc00 chroma_163.png
 ```
 
-You can see the result of changing the fuzz factor below, using . You should set a good factor that removes all of the background color in your frames. Once you're happy with the results of the test image you can batch process the chroma keying.
+You can see the result of changing the fuzz factor below, using between 10, and 40 %, from left to right. 
+
+![](https://github.com/tylertroy/video2spritegen/blob/master/chroma_compare.png "Comparison of 10 to 40% fuzz")
+
+You should set a good factor that removes all of the background color in your frames. Once you're happy with the results of the test image you can batch process the chroma keying.
 
 ```bash
 ls cropped*.png | sed 's/cropped//' | xargs -I{} echo convert cropped{} -fuzz 40% -transparent \\#00fc00 chroma{} | sh
@@ -84,6 +92,9 @@ The `-blur 0x2` argument defines defines the standard deviation of the gaussian 
 ```bash
 ls chroma*.png | sed 's/chroma//' | xargs -I{} echo convert chroma{} -alpha set -virtual-pixel transparent -channel A -blur 0x2 -level 50%,100% +channel edge{} | sh
 ```
+The zoomed image below demonstrates the benefit of edge blurring.
+
+![](https://github.com/tylertroy/video2spritegen/blob/master/edge_compare.png "With and Without Edge Blurring")
 
 ## Resize & Frame Rate
 
@@ -99,7 +110,9 @@ You should scale your image to the appropriate size for your application by modi
 ls scaled*.png | awk 'NR % 2 == 1 { print }' | xargs rm
 ```
 
-Here we are removing every 2nd frame. For every 3rd frame you would use `3 == 1`, etc. This leaves us with 55 items for 3MB in total. A much more reasonable size for a game element.
+Here we are removing every 2nd frame. For every 3rd frame you would use `3 == 1`, etc. This leaves us with 55 items for 3MB in total. A much more reasonable size for a game element. Here's an example of the finished product.
+
+![](https://github.com/tylertroy/video2spritegen/blob/master/scaled.png "final example")
 
 ## Generate Sprite Sheet
 
