@@ -58,7 +58,7 @@ Usually there will be some intro content and in the case of this video, multiple
 
 The first 163 frames containing the intro can be deleted. Now we'll identify the frame range representing one loop.  This is best achieved by opening two image viewers side by side and cycling though one viewer until you find the loop. In our case frames 164 to 273 leaving us with 110 frames. Here's an example frame.
 
-![](https://github.com/tylertroy/video2spritegen/blob/master/asteroid.png "Single Frame")
+![](./images/asteroid.png "Single Frame")
 
 ## Cropping
 
@@ -71,7 +71,7 @@ ls *png | sed 's/asteroid//' | xargs -I{} echo convert asteroid{} -crop 650x836+
 ```
 You should inspect the cropped frames to make sure you haven't clipped any of the content. If there is a clipped frame just rerun the above using different dimensions until you get it right. Here's a sample frame cropped.
 
-![](https://github.com/tylertroy/video2spritegen/blob/master/crop.png "Cropped Single Frame")
+![](./images/crop.png "Cropped Single Frame")
 
 ## Chroma Key
 
@@ -83,7 +83,7 @@ convert asteroid_164.png -fuzz 40% -transparent \#00fc00 chroma_163.png
 
 You can see the result of changing the `-fuzz` factor below, using between 10, and 40 %, from left to right. 
 
-![](https://github.com/tylertroy/video2spritegen/blob/master/chroma_compare.png "Comparison of 10 to 40% fuzz")
+![](./images/chroma_compare.png "Comparison of 10 to 40% fuzz")
 
 You should set a good factor that removes all of the background color in your frames. Once you're happy with the results of the test image you can batch process the chroma keying.
 
@@ -105,7 +105,7 @@ ls chroma*.png | sed 's/chroma//' | xargs -I{} echo convert chroma{} -alpha set 
 ```
 The zoomed image below demonstrates the benefit of edge blurring.
 
-![](https://github.com/tylertroy/video2spritegen/blob/master/edge_compare.png "With and Without Edge Blurring")
+![](./images/edge_compare.png "With and Without Edge Blurring")
 
 ## Resize & Frame Rate
 
@@ -139,7 +139,7 @@ montage scaled*.png -tile 1x55 -geometry 195x251+0+0 -background transparent "as
 
 Here we create a sprite sheet of 1 row and 55 columns where the dimension of each image specified as 195 width and 251 height. It's useful to indicate the size of each sprite in the sheet in the file name so you don't have to work it out later. 
 
-You can see the sprite sheet [here](https://github.com/tylertroy/video2spritegen/blob/master/asteroid_195x(251x55).png). 
+You can see the sprite sheet [here](./images/asteroid_195x(251x55).png). 
 
 Once you've created the sprite sheet you can delete all the other frames you created along the way.
 
